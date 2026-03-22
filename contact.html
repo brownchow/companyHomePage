@@ -6,6 +6,11 @@
     <title>联系我们 - 江苏好运科技有限公司</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map { height: 300px; border-radius: 10px; width: 100%; margin-top: 40px; }
+    </style>
 </head>
 <body>
     <header>
@@ -51,9 +56,7 @@
                             <p><i class="fas fa-envelope" style="margin-right: 10px; color: var(--primary-color);"></i> info@goodluck-tech.com</p>
                             <p><i class="fas fa-clock" style="margin-right: 10px; color: var(--primary-color);"></i> 工作时间：周一至周五 9:00 - 18:00</p>
                         </div>
-                        <div id="baidu-map" style="margin-top: 40px; border-radius: 10px; overflow: hidden; height: 300px; background: #eee;">
-                            <!-- 百度地图容器 -->
-                        </div>
+                        <div id="map"></div>
                     </div>
                 </div>
             </div>
@@ -90,28 +93,24 @@
             </div>
         </div>
     </footer>
-    <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=您的密钥"></script>
-    <script type="text/javascript">
-        window.onload = function() {
-            if (typeof BMap !== 'undefined') {
-                var map = new BMap.Map("baidu-map");
-                var myGeo = new BMap.Geocoder();
-                var address = "江苏省南京市江宁区淳化街道福英路天印健康创新园B1栋2楼";
-                myGeo.getPoint(address, function(point){
-                    if (point) {
-                        map.centerAndZoom(point, 16);
-                        var marker = new BMap.Marker(point);
-                        map.addOverlay(marker);
-                        var label = new BMap.Label("江苏好运科技", {offset: new BMap.Size(20, -10)});
-                        marker.setLabel(label);
-                        map.enableScrollWheelZoom(true);
-                    } else {
-                        // 如果解析不到地址，默认定位南京
-                        map.centerAndZoom("南京", 12);
-                    }
-                }, "南京市");
-            }
-        }
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置地图中心点坐标 (南京江宁天印健康创新园附近)
+            var lat = 31.9168;
+            var lng = 118.9056;
+            
+            var map = L.map('map').setView([lat, lng], 15);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            L.marker([lat, lng]).addTo(map)
+                .bindPopup('<b>江苏好运科技有限公司</b><br>天印健康创新园B1栋2楼')
+                .openPopup();
+        });
     </script>
     <script src="js/main.js"></script>
 </body>
