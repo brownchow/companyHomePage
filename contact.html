@@ -46,17 +46,13 @@
                         <h2 style="font-size: 32px; margin-bottom: 25px;">联系信息</h2>
                         <div style="margin-top: 20px; color: var(--text-light); line-height: 2;">
                             <p style="font-size: 18px; color: var(--text-dark); margin-bottom: 15px;">江苏好运科技有限公司</p>
-                            <p><i class="fas fa-map-marker-alt" style="margin-right: 10px; color: var(--primary-color);"></i> 江苏省南京市江宁区创新科技园 A8 栋</p>
+                            <p><i class="fas fa-map-marker-alt" style="margin-right: 10px; color: var(--primary-color);"></i> 江苏省南京市江宁区淳化街道福英路天印健康创新园B1栋2楼</p>
                             <p><i class="fas fa-phone-alt" style="margin-right: 10px; color: var(--primary-color);"></i> 025-8888-9999</p>
                             <p><i class="fas fa-envelope" style="margin-right: 10px; color: var(--primary-color);"></i> info@goodluck-tech.com</p>
                             <p><i class="fas fa-clock" style="margin-right: 10px; color: var(--primary-color);"></i> 工作时间：周一至周五 9:00 - 18:00</p>
                         </div>
-                        <div style="margin-top: 40px; border-radius: 10px; overflow: hidden; height: 300px; background: #eee; display: flex; align-items: center; justify-content: center; color: #888;">
-                            <!-- 模拟地图 -->
-                            <div style="text-align: center;">
-                                <i class="fas fa-map-marked-alt" style="font-size: 50px; margin-bottom: 15px;"></i>
-                                <p>地图组件加载中...</p>
-                            </div>
+                        <div id="baidu-map" style="margin-top: 40px; border-radius: 10px; overflow: hidden; height: 300px; background: #eee;">
+                            <!-- 百度地图容器 -->
                         </div>
                     </div>
                 </div>
@@ -83,7 +79,7 @@
                 <div>
                     <h3>联系我们</h3>
                     <ul style="margin-top: 15px;">
-                        <li>地址：江苏省南京市江宁区创新科技园 A8 栋</li>
+                        <li>地址：江苏省南京市江宁区淳化街道福英路天印健康创新园B1栋2楼</li>
                         <li>电话：025-8888-9999</li>
                         <li>邮箱：info@goodluck-tech.com</li>
                     </ul>
@@ -94,6 +90,29 @@
             </div>
         </div>
     </footer>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=您的密钥"></script>
+    <script type="text/javascript">
+        window.onload = function() {
+            if (typeof BMap !== 'undefined') {
+                var map = new BMap.Map("baidu-map");
+                var myGeo = new BMap.Geocoder();
+                var address = "江苏省南京市江宁区淳化街道福英路天印健康创新园B1栋2楼";
+                myGeo.getPoint(address, function(point){
+                    if (point) {
+                        map.centerAndZoom(point, 16);
+                        var marker = new BMap.Marker(point);
+                        map.addOverlay(marker);
+                        var label = new BMap.Label("江苏好运科技", {offset: new BMap.Size(20, -10)});
+                        marker.setLabel(label);
+                        map.enableScrollWheelZoom(true);
+                    } else {
+                        // 如果解析不到地址，默认定位南京
+                        map.centerAndZoom("南京", 12);
+                    }
+                }, "南京市");
+            }
+        }
+    </script>
     <script src="js/main.js"></script>
 </body>
 </html>
